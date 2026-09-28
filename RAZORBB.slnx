@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="RAZORBB/RAZORBB.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>

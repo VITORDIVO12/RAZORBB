@@ -1,0 +1,29 @@
+﻿@page "/cadastrar"
+
+
+<h3>Cadastrar</h3>
+
+<label>Nome</label><br /> 
+<input type="text" class="from control w-25" @bind="nome"/><br />
+<br /> <br /> 
+<label>email</label><br /> 
+<input type="password" class="from control w-25" @bind="email"/><br /> 
+<br /> 
+<label>telefone</label><br /> 
+<input type="password" class="from control w-25" @bind="telefone"/><br /> 
+<br /> 
+<button class="btn btn-outline-success" @onclick="Entrar">Entrar</button>
+
+@code {
+    string nome;
+ string email;
+ string telefone;
+ string mensagem;
+
+  void Entrar()
+ {
+     mensagem = "Botão bala fi";
+ }
+
+}
+
