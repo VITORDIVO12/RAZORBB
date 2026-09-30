@@ -1,39 +1,72 @@
 ﻿@inject NavigationManager navigation
+@using MySql.Data.MySqlClient
 @page "/"
 
-<img src="imagem/SP.jpg" class="w-25"  />
-
-
-<h1>LOGIN SUPER LEGAL</h1><br /> 
-
-<label>Nome</label><br /> 
-<input type="text" class="from control w-25" @bind="nome"/><br />
-<br /> <br /> 
-<label>Senha</label><br /> 
-<input type="password" class="from control w-25" @bind="senha"/><br /> 
-<br /> 
-<button class="btn btn-outline-success" @onclick="Login">Entrar</button>
-
-
-<p>mensagem: @mensagem</p>
-
-@code{
- string nome;
- string senha;
- string mensagem;
+<img src="Image/login.png" class="w-25" />
  
+<h1 class="animate__animated animate__bounce">Login</h1>
 
+<br />
 
- void Login()
- {
-     if (nome == "admin" && senha == "1234vitor")
-     {
-         //mensagem = "Slk fi logou";
-         navigation.NavigateTo("/cadastrar");
-     }
-     else
-     {
-         mensagem = "JOGOU BIZARRO BUT";
-     }
- }
-}
+<label>Nome</label>
+<br />
+<input type="text" class="form-control w-25" @bind="nome" />
+<br />
+<label>Senha</label>
+<br />
+<input type="password" class="form-control w-25" @bind="senha" />
+<br />
+<button class="btn btn-outline-primary" @onclick="Login">Entrar</button>
+<br /><br />
+<p>Mensagem: @mensagem</p>
+
+@code {
+    string nome;
+    string senha;
+    string mensagem;
+
+    void Entrar()
+    {
+        mensagem = "Botao funcionando";
+    }
+
+    void Login()
+    {
+        //logando no sistema
+        if (ValidarLogin(nome, senha))
+        {
+            //mensagem = "Logado com sucesso";
+            navigation.NavigateTo("/cadastrar");
+        }
+
+        else
+        {
+            mensagem = "Senha ou usuario incorreto";
+        }
+    }
+    bool ValidarLogin(string nome, string senha)
+    {
+        string conexao = "server=localhost;database=cadastro_cliente;user=root;password=root";
+
+        using MySqlConnection conn = new MySqlConnection(conexao);
+        conn.Open();
+
+        string sql = "SELECT COUNT(*) FROM USUARIOS WHERE NOME = @nome AND senha = @senha";
+
+        using MySqlCommand cmd = new MySqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@nome", nome);
+        cmd.Parameters.AddWithValue("@senha", senha);
+
+        int quantidade = Convert.ToInt32(cmd.ExecuteScalar());
+
+        if (quantidade > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+}     
